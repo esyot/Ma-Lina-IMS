@@ -29,6 +29,7 @@ class InventoryController extends Controller
                     $item->final_inv = $latestStock ? $latestStock->final_inv : 0;
                     return $item;
                 })
+
             ,
 
             'success' => session('success') ?? null,

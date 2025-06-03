@@ -46,8 +46,8 @@ const filterStatus = ref("");
       v-if="isOpenBorrowingSlipModal"
       @toggleBorrowingSlipModal="toggleBorrowingSlipModal"
     />
-    <section class="py-2 px-4">
-      <div class="flex items-center justify-between border-b border-red-800/50 p-2">
+    <section class="py-2">
+      <div class="flex items-center justify-between border-b p-2 border-red-800/50">
         <h1 class="text-2xl font-bold text-gray-800">Borrowers</h1>
         <button
           @click="toggleBorrowingSlipModal"
@@ -57,7 +57,7 @@ const filterStatus = ref("");
         </button>
       </div>
 
-      <section class="my-4 flex gap-4 items-center">
+      <section class="my-4 flex gap-4 items-center px -2">
         <label class="font-semibold text-gray-700">Filter:</label>
         <select
           v-model="filterStatus"

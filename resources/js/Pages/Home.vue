@@ -6,15 +6,12 @@ import { ref, defineProps } from "vue";
 defineProps({
   user: {
     type: Object,
-    default: [],
   },
   missing_items: {
     type: Array,
-    default: () => [],
   },
   out_of_stocks: {
     type: Array,
-    default: () => [],
   },
 });
 
@@ -44,7 +41,7 @@ const formattedDate = (date) =>
             {{ missing.name }} last used on {{ formattedDate(missing.last_date_used) }}
           </li>
         </ul>
-        <span v-if="!missing_items" class="flex justify-center">No Items</span>
+        <span v-if="missing_items === null" class="flex justify-center">No Items</span>
       </div>
 
       <div
@@ -62,6 +59,7 @@ const formattedDate = (date) =>
             {{ out.name }} - {{ out.final_inv }} {{ out.UOM }} left
           </li>
         </ul>
+        <span v-if="out_of_stocks.length < 0" class="flex justify-center">No Items</span>
       </div>
     </section>
 

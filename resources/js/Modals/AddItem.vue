@@ -15,7 +15,7 @@ const submitForm = () => {
   const toast = useToast();
   form.post("/items/item-store", {
     onSuccess: (success) => {
-      toast.success(success || "Item added successfully!", {
+      toast.success("Item added successfully!", {
         position: "top-right",
         timeout: 5000,
         closeOnClick: true,

@@ -13,33 +13,22 @@ class InventoryController extends Controller
     public function index()
     {
 
-
         return inertia('Inventory', [
             'user' => Auth::user(),
             'categories' => Category::all(),
             'uoms' => config('page.uoms'),
-            'items' => Stock::with([
-                'item' => function ($query) {
-                    $query->select('id', 'name', 'img', 'category_id', 'UOM')
-                        ->with('category:id,name');
-                }
-            ])
+            'items' => Item::with(['category:id,name'])
+                ->select('id', 'name', 'img', 'category_id', 'UOM')
                 ->get()
-                ->groupBy('item_id')
-                ->map(function ($group) {
-                    return $group->sortByDesc('date')->first();
+                ->map(function ($item) {
+
+                    $latestStock = Stock::where('item_id', $item->id)
+                        ->orderByDesc('date')
+                        ->first();
+
+                    $item->final_inv = $latestStock ? $latestStock->final_inv : 0;
+                    return $item;
                 })
-                ->values()
-                ->map(function ($stock) {
-                    if ($stock->item)
-                    {
-                        $stock->item->final_inv = $stock->final_inv;
-                    }
-                    return $stock->item;
-                })
-                ->filter()
-                ->unique('id')
-                ->values()
             ,
 
             'success' => session('success') ?? null,

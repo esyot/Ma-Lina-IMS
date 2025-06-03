@@ -10,6 +10,10 @@ import AddItem from "@/Modals/AddItem.vue";
 import AddCategory from "@/Modals/AddCategory.vue";
 
 defineProps({
+  user: {
+    type: Object,
+    required: true,
+  },
   categories: {
     type: Array,
     default: () => [],
@@ -36,7 +40,7 @@ const toggleAddCategoryModal = () => {
 </script>
 
 <template>
-  <Layout>
+  <Layout :user="user">
     <AddItem
       v-if="isOpenAddItemModal"
       :categories="categories"

@@ -4,6 +4,10 @@ import { defineProps } from "vue";
 import { useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
+  user: {
+    type: Object,
+    required: true,
+  },
   items: {
     type: Array,
     default: () => [],
@@ -36,7 +40,7 @@ const handleSave = () => {
 </script>
 
 <template>
-  <Layout>
+  <Layout :user="props.user">
     <section>
       <form @submit.prevent="handleSave">
         <div class="flex border-b items-center justify-between p-2">

@@ -1,5 +1,12 @@
 <script setup>
-import { ref } from "vue";
+import { ref, defineProps } from "vue";
+
+defineProps({
+  user: {
+    type: Object,
+    default: [],
+  },
+});
 
 const isOpen = ref(false);
 </script>
@@ -84,14 +91,14 @@ const isOpen = ref(false);
           >
         </div>
 
-        <div class="relative group">
+        <div class="relative group hidden md:block">
           <button class="flex items-center space-x-2 focus:outline-none">
             <img
               src="/public/assets/images/user-logo.png"
               alt="User"
               class="w-8 h-8 rounded-full border border-gray-300"
             />
-            <span>Reinhard E.</span>
+            <span>{{ user.name }}</span>
           </button>
           <div
             class="absolute mt-2 right-0 w-48 bg-white border border-gray-200 rounded shadow-lg z-50 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto transition-opacity"
@@ -99,7 +106,7 @@ const isOpen = ref(false);
             <a href="/user-details" class="block px-4 py-2 text-gray-700 hover:bg-red-50">
               User Details
             </a>
-            <form method="POST" action="/logout">
+            <form method="GET" action="/logout">
               <button
                 type="submit"
                 class="w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50"
@@ -114,19 +121,50 @@ const isOpen = ref(false);
 
     <div class="md:hidden" id="mobile-menu" v-show="isOpen">
       <div class="px-2 pt-2 pb-3 space-y-1">
-        <a href="/" class="block text-red-800 hover:text-gray-700 px-3 py-2 rounded-md"
+        <a
+          href="/"
+          :class="[
+            $page.url === '/'
+              ? 'border border-red-800 text-red-800 px-4 py-2 rounded font-semibold block'
+              : 'text-red-800 hover:bg-red-100 px-4 py-2 rounded transition block',
+          ]"
           >Home</a
         >
         <a
           href="/inventory"
-          class="block text-red-800 hover:text-gray-700 px-3 py-2 rounded-md"
+          :class="[
+            $page.url.startsWith('/inventory')
+              ? 'border border-red-800 text-red-800 px-4 py-2 rounded font-semibold block'
+              : 'text-red-800 hover:bg-red-100 px-4 py-2 rounded transition block',
+          ]"
           >Inventory</a
         >
         <a
-          href="/contact"
-          class="block text-red-800 hover:text-gray-700 px-3 py-2 rounded-md"
-          >Contact</a
+          href="/stocks"
+          :class="[
+            $page.url.startsWith('/stocks')
+              ? 'border border-red-800 text-red-800 px-4 py-2 rounded font-semibold block'
+              : 'text-red-800 hover:bg-red-100 px-4 py-2 rounded transition block',
+          ]"
+          >Stocks</a
         >
+        <a
+          href="/borrowing-items"
+          :class="[
+            $page.url.startsWith('/borrowing-items')
+              ? 'border border-red-800 text-red-800 px-4 py-2 rounded font-semibold block'
+              : 'text-red-800 hover:bg-red-100 px-4 py-2 rounded transition block',
+          ]"
+          >Borrowing Items</a
+        >
+        <form method="GET" action="/logout">
+          <button
+            type="submit"
+            class="w-full text-left px-4 py-2 text-red-800 hover:bg-red-50 block"
+          >
+            Logout
+          </button>
+        </form>
       </div>
     </div>
   </nav>

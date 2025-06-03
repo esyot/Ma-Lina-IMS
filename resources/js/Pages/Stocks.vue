@@ -3,6 +3,10 @@ import Layout from "@/Layouts/Layout.vue";
 
 import { defineProps } from "vue";
 defineProps({
+  user: {
+    type: Object,
+    required: true,
+  },
   stocks: {
     type: Object,
   },
@@ -17,7 +21,7 @@ const formattedDate = (date) =>
 </script>
 
 <template>
-  <Layout>
+  <Layout :user="user">
     <section class="select-none">
       <div class="flex border-b items-center justify-between p-2">
         <h1 class="text-2xl font-bold">Stock Records</h1>

@@ -4,6 +4,10 @@ import Layout from "@/Layouts/Layout.vue";
 import { ref, defineProps } from "vue";
 
 defineProps({
+  user: {
+    type: Object,
+    default: [],
+  },
   missing_items: {
     type: Array,
     default: () => [],
@@ -23,7 +27,7 @@ const formattedDate = (date) =>
 </script>
 
 <template>
-  <Layout>
+  <Layout :user="user">
     <section class="flex justify-around m-2 space-x-2 select-none">
       <div
         class="border-2 border-red-800/30 rounded-lg w-full shadow-md bg-yellow-100/50"

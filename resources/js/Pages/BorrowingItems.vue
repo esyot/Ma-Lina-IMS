@@ -7,6 +7,10 @@ import { defineProps, ref } from "vue";
 import { router } from "@inertiajs/vue3";
 
 defineProps({
+  user: {
+    type: Object,
+    required: true,
+  },
   borrowing_slips: {
     type: Array,
     default: () => [],
@@ -37,7 +41,7 @@ const filterStatus = ref("");
 </script>
 
 <template>
-  <Layout>
+  <Layout :user="user">
     <BorrowingSlip
       v-if="isOpenBorrowingSlipModal"
       @toggleBorrowingSlipModal="toggleBorrowingSlipModal"

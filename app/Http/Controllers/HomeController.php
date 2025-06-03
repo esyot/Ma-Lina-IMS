@@ -6,14 +6,14 @@ use App\Models\BorrowedItem;
 use App\Models\BorrowingSlip;
 use App\Models\Item;
 use App\Models\Stock;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index()
     {
-
         return inertia('Home', [
-
+            'user' => Auth::user(),
             'missing_items' => Item::whereIn(
                 'id',
                 BorrowedItem::whereIn(

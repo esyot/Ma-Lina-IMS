@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StockController extends Controller
 {
@@ -13,6 +14,7 @@ class StockController extends Controller
         return inertia(
             'Stocks',
             [
+                'user' => Auth::user(),
                 'stocks' => Stock::orderBy('date', 'DESC')
                     ->get()
                     ->groupBy('date')
@@ -31,6 +33,7 @@ class StockController extends Controller
         return inertia(
             'AddStockRecord',
             [
+                'user' => Auth::user(),
                 'items' => Item::all(),
             ]
         );

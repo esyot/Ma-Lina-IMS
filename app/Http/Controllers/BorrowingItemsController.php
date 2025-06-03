@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\BorrowedItem;
 use App\Models\BorrowingSlip;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BorrowingItemsController extends Controller
 {
     public function index()
     {
         return inertia('BorrowingItems', [
+            'user' => Auth::user(),
             'borrowing_slips' => BorrowingSlip::where('status', '=', 'ongoing')->get(),
         ]);
 

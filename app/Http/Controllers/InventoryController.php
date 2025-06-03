@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InventoryController extends Controller
 {
@@ -14,6 +15,7 @@ class InventoryController extends Controller
 
 
         return inertia('Inventory', [
+            'user' => Auth::user(),
             'categories' => Category::all(),
             'uoms' => config('page.uoms'),
             'items' => Stock::with([

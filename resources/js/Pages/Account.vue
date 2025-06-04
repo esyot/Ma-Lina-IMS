@@ -1,8 +1,10 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
 import { useForm } from "@inertiajs/vue3";
+import { useToast } from "vue-toastification";
+import { defineProps } from "vue";
 
-import { defineProps, ref } from "vue";
+const toast = useToast();
 
 const props = defineProps({
   user: {
@@ -21,10 +23,6 @@ const securityForm = useForm({
   newPassword: "",
   confirmPassword: "",
 });
-
-import { useToast } from "vue-toastification";
-
-const toast = useToast();
 
 const updateUser = () => {
   userForm.put("/account/user-details", {

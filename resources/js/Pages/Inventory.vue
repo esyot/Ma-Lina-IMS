@@ -70,6 +70,13 @@ const searchItems = () => {
     router.visit("/inventory");
   }
 };
+
+const showCategories = ref(true);
+if (props.categoryId === "all") {
+  showCategories.value = false;
+} else {
+  showCategories.value = true;
+}
 </script>
 
 <template>
@@ -112,21 +119,34 @@ const searchItems = () => {
       <nav>
         <button
           class="flex w-full justify-between items-center px-4 space-x-2 border-x shadow-md"
+          @click="showCategories = !showCategories"
         >
           <span class="font-bold py-2">Categories</span>
-          <i class="fas fa-chevron-down fa-sm"></i>
+          <i
+            :class="[
+              'fas fa-chevron-down fa-sm transition-transform duration-300',
+              showCategories ? 'rotate-180' : '',
+            ]"
+          ></i>
         </button>
+
         <ul
-          class="flex flex-col justify-between w-full bg-gray-100 p-4 space-y-2 border-b rounded-b-lg shadow-md"
+          v-show="true"
+          :class="[
+            'flex flex-col justify-between w-full bg-gray-100 p-4 space-y-2 border-b rounded-b-lg shadow-md transform transition-all duration-300 ease-in-out origin-top',
+            showCategories
+              ? 'max-h-96 opacity-100 scale-100'
+              : 'max-h-0 opacity-0 scale-y-95 overflow-hidden',
+          ]"
         >
-          <li class="hover:text-blue-500 cursor-pointer" @click="changeCategory('all')">
+          <li class="hover:text-red-800 cursor-pointer" @click="changeCategory('all')">
             All
           </li>
           <li
             v-for="(category, index) in categories"
             :key="category.id || index"
             @click="changeCategory(category.id)"
-            class="hover:text-blue-500 cursor-pointer"
+            class="hover:text-red-800 cursor-pointer"
           >
             {{ category.name }}
           </li>
@@ -139,11 +159,12 @@ const searchItems = () => {
           </button>
         </ul>
       </nav>
+
       <aside class="flex-1 m-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <button
             v-if="categories.length > 0"
-            class="relative bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-200 flex flex-col items-center justify-center cursor-pointer border-2 border-dashed border-gray-300 hover:border-blue-400 min-h-64"
+            class="relative bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-200 flex flex-col items-center justify-center cursor-pointer border-2 border-dashed border-gray-300 hover:border-red-800 min-h-64"
             @click="toggleAddItemModal"
             type="button"
           >
@@ -178,7 +199,7 @@ const searchItems = () => {
                 </span>
                 <small class="text-gray-500 mb-2 truncate">{{ item.description }}</small>
                 <div class="flex items-center justify-between mt-auto">
-                  <span class="text-sm font-bold text-blue-700">
+                  <span class="text-sm font-bold text-red-800">
                     {{ item.final_inv }} {{ item.UOM }} /s
                   </span>
                   <span class="text-xs text-gray-400">#{{ item.code || index + 1 }}</span>

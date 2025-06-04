@@ -157,6 +157,17 @@ const isOpen = ref(false);
           ]"
           >Borrowing Items</a
         >
+
+        <a
+          href="/account"
+          :class="[
+            $page.url.startsWith('/account')
+              ? 'border border-red-800 text-red-800 px-4 py-2 rounded font-semibold block'
+              : 'text-red-800 hover:bg-red-100 px-4 py-2 rounded transition block',
+          ]"
+          >Account</a
+        >
+
         <form method="GET" action="/logout">
           <button
             type="submit"

@@ -2,11 +2,12 @@
 import Layout from "@/Layouts/Layout.vue";
 
 import BorrowingSlip from "@/Modals/BorrowingSlip.vue";
+import ViewBorrowedItems from "@/Modals/ViewBorrowedItems.vue";
 
 import { defineProps, ref } from "vue";
 import { router } from "@inertiajs/vue3";
 
-defineProps({
+const props = defineProps({
   user: {
     type: Object,
     required: true,
@@ -14,6 +15,10 @@ defineProps({
   borrowing_slips: {
     type: Array,
     default: () => [],
+  },
+  status: {
+    type: String,
+    default: "all",
   },
 });
 
@@ -37,7 +42,24 @@ const markAsReturned = (id) => {
   );
 };
 
-const filterStatus = ref("");
+const borrowedItems = ref([]);
+
+const isOpenViewBorrowedItemsModal = ref(false);
+const toggleViewBorrowedItemsModal = (items) => {
+  borrowedItems.value = items ?? [];
+  isOpenViewBorrowedItemsModal.value = !isOpenViewBorrowedItemsModal.value;
+};
+
+const status = ref(props.status);
+
+const filterBorrowingSlips = () => {
+  router.visit(`/borrowing-items/filter-status/${status.value}`);
+};
+
+const formatDate = (dateString) => {
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
 </script>
 
 <template>
@@ -46,9 +68,14 @@ const filterStatus = ref("");
       v-if="isOpenBorrowingSlipModal"
       @toggleBorrowingSlipModal="toggleBorrowingSlipModal"
     />
+    <ViewBorrowedItems
+      v-if="isOpenViewBorrowedItemsModal"
+      @toggleViewBorrowedItemsModal="toggleViewBorrowedItemsModal"
+      :items="borrowedItems"
+    />
     <section class="">
       <div class="flex items-center justify-between border-b border-red-800/50">
-        <h1 class="text-2xl font-bold p-2">Borrowers</h1>
+        <h1 class="text-xl font-bold p-2">Borrowers</h1>
         <button
           @click="toggleBorrowingSlipModal"
           class="bg-red-800 text-red-100 px-4 py-2 m-2 rounded hover:opacity-50"
@@ -60,12 +87,13 @@ const filterStatus = ref("");
       <section class="my-4 flex gap-4 items-center px-2">
         <label class="font-semibold text-gray-700">Filter:</label>
         <select
-          v-model="filterStatus"
+          v-model="status"
           class="border rounded px-3 py-1 text-gray-700 focus:outline-none"
+          @change="filterBorrowingSlips()"
         >
-          <option value="">All</option>
-          <option value="Ongoing">Ongoing</option>
-          <option value="Returned">Returned</option>
+          <option value="all">All</option>
+          <option value="ongoing">Ongoing</option>
+          <option value="returned">Returned</option>
         </select>
       </section>
       <div
@@ -82,18 +110,25 @@ const filterStatus = ref("");
           <div class="text-gray-500 text-sm">
             <span class="block"><strong>Contact:</strong> {{ slip.contact_no }}</span>
             <span class="block"><strong>Purpose:</strong> {{ slip.purpose }}</span>
+
+            <span class="block"
+              ><strong>Date:</strong> {{ formatDate(slip.date_start) }} -
+              {{ formatDate(slip.date_end) }}</span
+            >
             <span class="block"><strong>Status:</strong> {{ slip.status }}</span>
           </div>
           <div class="mt-4 flex gap-2">
             <button
-              class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-xs"
+              @click="toggleViewBorrowedItemsModal(slip.borrowed_items)"
+              class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-xs"
             >
               View Borrowed Items
             </button>
 
             <button
+              v-if="slip.status === 'ongoing'"
               @click="markAsReturned(slip.id)"
-              class="bg-blue-500 text-white px-3 py-1 rounded hover:opacity-50 text-xs"
+              class="bg-blue-500 text-white px-4 py-2 rounded hover:opacity-50 text-xs"
             >
               Mark as Returned
             </button>

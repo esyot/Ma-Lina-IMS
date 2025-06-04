@@ -2,6 +2,7 @@
 import { defineEmits, ref } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import axios from "axios";
+import { useToast } from "vue-toastification";
 
 const isSearchingItems = ref(false);
 const items = ref([]);
@@ -42,21 +43,46 @@ const closeModal = () => {
 };
 
 const submitForm = () => {
+  const toast = useToast();
   form.post("/borrowing-items/submit-slip", {
     onSuccess: () => {
+      toast.success("Borrowing slip submitted successfully.", {
+        position: "top-right",
+        timeout: 3000,
+      });
       closeModal();
     },
     onError: (errors) => {
-      console.error("Form submission errors:", errors);
+      toast.error("Failed to submit borrowing slip. Please check the form.", {
+        position: "top-right",
+        timeout: 3000,
+      });
     },
   });
 };
 
 const searchItems = () => {
+  const toast = useToast();
   isSearchingItems.value = true;
+
+  if (form.date_start === "" || form.date_end === "") {
+    toast.error("Please complete the date start and date end fields.");
+    isSearchingItems.value = false;
+    return;
+  }
+  if (form.date_end < form.date_start) {
+    toast.error("Date end must be greater than or equal to date start.");
+    isSearchingItems.value = false;
+    return;
+  }
+
   axios
     .get("/items-search", {
-      params: { search_value: search_value.value },
+      params: {
+        search_value: search_value.value,
+        date_start: form.date_start,
+        date_end: form.date_end,
+      },
       headers: { "Content-Type": "application/json" },
     })
     .then(({ data }) => {

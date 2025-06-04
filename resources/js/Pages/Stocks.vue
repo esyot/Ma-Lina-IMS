@@ -24,7 +24,7 @@ const formattedDate = (date) =>
   <Layout :user="user">
     <section class="select-none">
       <div class="flex border-b border-red-800/50 items-center justify-between p-2">
-        <h1 class="text-2xl font-bold">Stock Records</h1>
+        <h1 class="text-xl font-bold">Stock Records</h1>
 
         <a
           href="/stocks/add-stock-record"

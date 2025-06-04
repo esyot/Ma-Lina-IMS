@@ -7,4 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class BorrowingSlip extends Model
 {
     protected $guarded = [];
+
+    public function borrowedItems()
+    {
+        return $this->hasMany(BorrowedItem::class);
+    }
 }
+

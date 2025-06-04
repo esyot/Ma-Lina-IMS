@@ -44,6 +44,8 @@ Route::middleware([CheckAuthenticated::class])->group(function () {
 
     Route::get('/borrowing-items', [BorrowingItemsController::class, 'index'])->name('borrowing-items.index');
 
+    Route::get('/borrowing-items/filter-status/{status}', [BorrowingItemsController::class, 'filterByStatus'])
+        ->name('borrowing-items.filter-status');
     Route::get('items-search', [ItemController::class, 'search'])
         ->name('items.search');
 

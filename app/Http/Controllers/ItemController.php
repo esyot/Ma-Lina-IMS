@@ -36,13 +36,24 @@ class ItemController extends Controller
 
     public function search(Request $request)
     {
-        $searchTerm = $request->input('search_value');
 
-        $items = Stock::with([
+        $request->validate([
+            'search_value' => 'required|string|max:255',
+            'date_start' => 'required|date',
+            'date_end' => 'required|date|after_or_equal:date_start',
+        ]);
+
+        $searchTerm = $request->input('search_value');
+        $dateStart = $request->input('date_start');
+        $dateEnd = $request->input('date_end');
+
+        // Get the latest stock per item
+        $latestStocks = Stock::with([
             'item' => function ($query) use ($searchTerm) {
-                $query->where('name', 'LIKE', '%' . $searchTerm . '%')
-                    ->orWhere('description', 'LIKE', '%' . $searchTerm . '%')
-                    ->select('id', 'name', 'img', 'category_id', 'UOM')
+                $query->where(function ($q) use ($searchTerm) {
+                    $q->where('name', 'LIKE', "%$searchTerm%")
+                        ->orWhere('description', 'LIKE', "%$searchTerm%");
+                })->select('id', 'name', 'img', 'category_id', 'UOM')
                     ->with('category:id,name');
             }
         ])
@@ -51,39 +62,61 @@ class ItemController extends Controller
             ->map(function ($group) {
                 return $group->sortByDesc('date')->first();
             })
-            ->values()
+            ->filter(fn($stock) => $stock->item !== null)
             ->map(function ($stock) {
-                if ($stock->item)
-                {
-                    $stock->item->final_inv = $stock->final_inv;
-                }
+                $stock->item->final_inv = $stock->final_inv ?? 0;
                 return $stock->item;
             })
-            ->filter()
             ->unique('id')
             ->values();
 
-        $ongoingSlips = BorrowingSlip::where('status', 'ongoing')
-            ->pluck('id')
-            ->toArray();
+        // Get items with no stock
+        $stockedItemIds = $latestStocks->pluck('id');
 
-        $borrowedItems = BorrowedItem::whereIn('item_id', $items->pluck('id'))
-            ->whereIn('borrowing_slip_id', $ongoingSlips)
+        $itemsWithoutStock = Item::where(function ($q) use ($searchTerm) {
+            $q->where('name', 'LIKE', "%$searchTerm%")
+                ->orWhere('description', 'LIKE', "%$searchTerm%");
+        })
+            ->whereNotIn('id', $stockedItemIds)
+            ->with('category:id,name')
+            ->get()
+            ->map(function ($item) {
+                $item->final_inv = 0;
+                $item->borrowed = 0;
+                return $item;
+            });
+
+        // Merge all items
+        $items = $latestStocks->merge($itemsWithoutStock);
+
+        $itemIds = $items->pluck('id');
+
+        // Get borrowed items within the date range
+        $borrowedItems = BorrowedItem::whereIn('item_id', $itemIds)
+            ->whereHas('borrowingSlip', function ($query) use ($dateStart, $dateEnd) {
+                $query->where('status', 'ongoing')
+                    ->whereBetween('created_at', [$dateStart, $dateEnd]);
+            })
             ->get()
             ->groupBy('item_id')
             ->map(function ($group) {
-                return $group->sortByDesc('created_at')->first();
+                return $group->sum('quantity'); // Total quantity per item
             });
 
+        // Subtract borrowed quantities from available inventory
         $items = $items->map(function ($item) use ($borrowedItems) {
-            $borrowedQty = $borrowedItems->has($item->id) ? $borrowedItems->get($item->id)->quantity : 0;
+            $borrowedQty = $borrowedItems->get($item->id) ?? 0;
             $item->borrowed = $borrowedQty;
             $item->final_inv = max(0, $item->final_inv - $borrowedQty);
             return $item;
-        });
+        })
+            ->filter(function ($item) {
+                return isset($item->category) && $item->category->name === 'Equipments';
+            })
+            ->values();
 
+        return response()->json($items);
 
-        return response()->json($items ?? []);
 
     }
 

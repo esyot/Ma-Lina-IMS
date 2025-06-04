@@ -13,7 +13,9 @@ class BorrowingItemsController extends Controller
     {
         return inertia('BorrowingItems', [
             'user' => Auth::user(),
-            'borrowing_slips' => BorrowingSlip::where('status', '=', 'ongoing')->get(),
+            'borrowing_slips' => BorrowingSlip::with('borrowedItems.item')
+                ->get(),
+
         ]);
 
     }
@@ -65,6 +67,25 @@ class BorrowingItemsController extends Controller
         {
             return redirect()->back()->withErrors('error', 'Failed to mark borrowing slip as returned. Please try again.');
         }
+    }
+
+    public function filterByStatus($status)
+    {
+        if ($status === 'all')
+        {
+            $borrowing_slips = BorrowingSlip::with('borrowedItems.item')->get();
+        } else
+        {
+            $borrowing_slips = BorrowingSlip::where('status', $status)
+                ->with('borrowedItems.item')
+                ->get();
+        }
+
+        return inertia('BorrowingItems', [
+            'user' => Auth::user(),
+            'status' => $status,
+            'borrowing_slips' => $borrowing_slips,
+        ]);
     }
 
 }

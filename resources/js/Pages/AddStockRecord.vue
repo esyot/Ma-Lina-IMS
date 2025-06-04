@@ -19,7 +19,7 @@ const form = useForm({
   stocks: props.items.reduce((acc, item) => {
     acc[item.id] = {
       item_id: item.id,
-      beg_inv: 0,
+      beg_inv: item.final_inv,
       stock_in: 0,
       stock_out: 0,
     };
@@ -100,7 +100,8 @@ const handleSave = () => {
                   <td class="border px-2 py-2 w-20 bg-green-500/10">
                     <input
                       type="number"
-                      v-model.number="form.stocks[item.id].beg_inv"
+                      :value="item.final_inv"
+                      disabled
                       class="w-full border rounded px-1 py-1"
                     />
                   </td>

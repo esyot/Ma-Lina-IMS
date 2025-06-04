@@ -34,14 +34,16 @@ const formattedDate = (date) =>
         </a>
       </div>
     </section>
-    <section>
+    <section class="h-[80vh] overflow-y-auto">
       <div v-for="(stock, date) in stocks" :key="date">
         <a
           :href="'/stocks/stock-record/' + date"
-          class="flex justify-between spaxe-x-2 border-b p-2 hover:bg-gray-100 cursor-pointer"
+          class="flex items-center justify-between spaxe-x-2 border-b p-2 hover:bg-gray-100 cursor-pointer"
         >
           <span>{{ formattedDate(date) }}</span>
-          <i class="fas fa-eye px-2"></i>
+          <button class="p-4 hover:opacity-50">
+            <i class="fas fa-eye text-red-800 px-2"></i>
+          </button>
         </a>
       </div>
     </section>

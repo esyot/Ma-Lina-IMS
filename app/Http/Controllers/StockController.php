@@ -34,7 +34,11 @@ class StockController extends Controller
             'AddStockRecord',
             [
                 'user' => Auth::user(),
-                'items' => Item::all(),
+                'items' => Item::all()->map(function ($item) {
+                    $latestStock = Stock::where('item_id', $item->id)->orderBy('date', 'desc')->first();
+                    $finalInv = $latestStock ? $latestStock->final_inv : 0;
+                    return array_merge($item->toArray(), ['final_inv' => $finalInv]);
+                }),
             ]
         );
     }

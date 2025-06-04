@@ -176,7 +176,7 @@ const searchItems = () => {
                 >
                   <span>{{ item.name }}, available: {{ item.final_inv }} pcs</span>
 
-                  <div class="flex">
+                  <div :class="item.final_inv <= 0 ? 'hidden' : 'flex'">
                     <input
                       type="number"
                       :max="parseInt(item.final_inv, 10)"

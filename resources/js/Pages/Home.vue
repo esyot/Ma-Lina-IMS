@@ -6,12 +6,15 @@ import { ref, defineProps } from "vue";
 defineProps({
   user: {
     type: Object,
+    required: true,
   },
   missing_items: {
     type: Array,
+    default: null,
   },
   out_of_stocks: {
     type: Array,
+    default: null,
   },
 });
 
@@ -48,7 +51,7 @@ const formattedDate = (date) =>
         class="border-2 border-red-800/30 rounded-lg w-full shadow-md bg-yellow-100/50"
       >
         <h2 class="text-lg text-red-800 font-semibold p-2 bg-gray-100 rounded-t-lg">
-          Near Out of Stock
+          Near/Out of Stock
         </h2>
         <ul class="px-4 rounded-b-lg">
           <li
@@ -59,7 +62,7 @@ const formattedDate = (date) =>
             {{ out.name }} - {{ out.final_inv }} {{ out.UOM }} left
           </li>
         </ul>
-        <span v-if="out_of_stocks.length < 0" class="flex justify-center">No Items</span>
+        <span v-if="out_of_stocks === null" class="flex justify-center">No Items</span>
       </div>
     </section>
 

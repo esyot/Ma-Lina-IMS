@@ -10,28 +10,34 @@ use Illuminate\Support\Facades\Auth;
 
 class InventoryController extends Controller
 {
-    public function index()
+    public function index($categoryId = null, $searchTerm = null)
     {
+
 
         return inertia('Inventory', [
             'user' => Auth::user(),
+            'searchTerm' => $searchTerm,
+            'categoryId' => $categoryId,
             'categories' => Category::all(),
             'uoms' => config('page.uoms'),
-            'items' => Item::with(['category:id,name'])
-                ->select('id', 'name', 'img', 'category_id', 'UOM')
-                ->get()
-                ->map(function ($item) {
-
-                    $latestStock = Stock::where('item_id', $item->id)
-                        ->orderByDesc('date')
-                        ->first();
-
-                    $item->final_inv = $latestStock ? $latestStock->final_inv : 0;
-                    return $item;
+            'items' => Item::when($searchTerm, function ($query) use ($searchTerm) {
+                $query->where(function ($q) use ($searchTerm) {
+                    $q->where('name', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('description', 'like', '%' . $searchTerm . '%');
+                });
+            })
+                ->when($categoryId && $categoryId !== 'all', function ($query) use ($categoryId) {
+                    $query->where('category_id', $categoryId);
                 })
-
-            ,
-
+                ->with('category:id,name')
+                ->select('id', 'name', 'img', 'category_id', 'UOM')
+                ->paginate(20)
+                ->through(function ($item) {
+                    $item->final_inv = Stock::where('item_id', $item->id)
+                        ->latest('date')
+                        ->value('final_inv') ?? 0;
+                    return $item;
+                }),
             'success' => session('success') ?? null,
         ]);
 

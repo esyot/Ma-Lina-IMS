@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BorrowingItemsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
@@ -20,6 +21,12 @@ Route::middleware([CheckAuthenticated::class])->group(function () {
 
     Route::get('/inventory', [InventoryController::class, 'index'])
         ->name('inventory');
+
+    Route::get('/inventory/{categoryId}', [InventoryController::class, 'index'])
+        ->name('inventory');
+
+    Route::get('/inventory/search/{category}/{search}', [InventoryController::class, 'index'])
+        ->name('inventory.search');
 
     Route::post('/categories/category-store', [CategoryController::class, 'store'])->name('categories.store');
 
@@ -47,6 +54,14 @@ Route::middleware([CheckAuthenticated::class])->group(function () {
         ->name('borrowing-items.mark-as-returned');
 
     Route::get('/stocks/stock-record/{date}', [StockController::class, 'stockRecord'])->name('stocks.record');
+
+    Route::get('/account', [AccountController::class, 'index'])->name('account.index');
+
+    Route::put('/account/user-details', [AccountController::class, 'updateDetails'])
+        ->name('account.update-details');
+
+    Route::put('/account/user-password', [AccountController::class, 'updatePassword'])
+        ->name('account.update-password');
 
 });
 

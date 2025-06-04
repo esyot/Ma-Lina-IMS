@@ -1,5 +1,6 @@
 <script setup>
 import { useForm } from "@inertiajs/vue3";
+import { useToast } from "vue-toastification";
 
 const form = useForm({
   email: "",
@@ -7,9 +8,21 @@ const form = useForm({
 });
 
 const login = () => {
+  const toast = useToast();
   form.post("/login/submit-credentials", {
     onError: (errors) => {
-      console.error("Login failed:", errors);
+      if (errors.email) {
+        toast.error(errors.email, {
+          position: "top-right",
+          timeout: 5000,
+        });
+      }
+      if (errors.password) {
+        toast.error(errors.password, {
+          position: "top-right",
+          timeout: 5000,
+        });
+      }
     },
   });
 };

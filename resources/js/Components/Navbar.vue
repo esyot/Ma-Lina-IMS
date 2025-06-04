@@ -103,8 +103,8 @@ const isOpen = ref(false);
           <div
             class="absolute mt-2 right-0 w-48 bg-white border border-gray-200 rounded shadow-lg z-50 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto transition-opacity"
           >
-            <a href="/user-details" class="block px-4 py-2 text-gray-700 hover:bg-red-50">
-              User Details
+            <a href="/account" class="block px-4 py-2 text-gray-700 hover:bg-red-50">
+              Account
             </a>
             <form method="GET" action="/logout">
               <button

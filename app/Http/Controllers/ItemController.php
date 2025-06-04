@@ -78,16 +78,13 @@ class ItemController extends Controller
         $items = $items->map(function ($item) use ($borrowedItems) {
             $borrowedQty = $borrowedItems->has($item->id) ? $borrowedItems->get($item->id)->quantity : 0;
             $item->borrowed = $borrowedQty;
-
             $item->final_inv = max(0, $item->final_inv - $borrowedQty);
             return $item;
         });
 
-        $items = $items->filter(function ($item) {
-            return $item->final_inv > 0 || $item->borrowed > 0;
-        });
 
         return response()->json($items ?? []);
+
     }
 
 }

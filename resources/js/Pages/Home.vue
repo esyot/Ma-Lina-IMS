@@ -32,16 +32,21 @@ const formattedDate = (date) =>
       <div
         class="border-2 border-red-800/30 rounded-lg w-full shadow-md bg-yellow-100/50"
       >
-        <h2 class="text-lg text-red-800 font-semibold p-2 bg-gray-100 rounded-t-lg">
-          Missing
-        </h2>
+        <div class="flex items-center justify-between bg-gray-100 rounded-t-lg">
+          <h2 class="text-lg text-red-800 font-semibold p-2">Missing</h2>
+
+          <a href="/borrowing-items" class="p-2 text-gray-800 hover:opacity-50">
+            <i class="fas fa-maximize"></i>
+          </a>
+        </div>
         <ul class="px-4 rounded-b-lg">
           <li
             v-for="(missing, index) in missing_items"
             :key="index"
             class="border-b border-gray-800/30 py-2"
           >
-            {{ missing.name }} last used on {{ formattedDate(missing.last_date_used) }}
+            {{ missing.item.name }} ({{ missing.quantity }} pc/s) last used on
+            {{ formattedDate(missing.borrowing_slip.date_end) }}
           </li>
         </ul>
         <span v-if="missing_items === null" class="flex justify-center">No Items</span>
@@ -50,16 +55,19 @@ const formattedDate = (date) =>
       <div
         class="border-2 border-red-800/30 rounded-lg w-full shadow-md bg-yellow-100/50"
       >
-        <h2 class="text-lg text-red-800 font-semibold p-2 bg-gray-100 rounded-t-lg">
-          Near/Out of Stock
-        </h2>
+        <div class="flex items-center justify-between bg-gray-100 rounded-t-lg">
+          <h2 class="text-lg text-red-800 font-semibold p-2">Near/Out of Stock</h2>
+          <a href="/stocks" class="p-2 text-gray-800 hover:opacity-50">
+            <i class="fas fa-maximize"></i>
+          </a>
+        </div>
         <ul class="px-4 rounded-b-lg">
           <li
             v-for="(out, index) in out_of_stocks"
             :key="index"
             class="border-b border-gray-800/30 py-2"
           >
-            {{ out.name }} - {{ out.final_inv }} {{ out.UOM }} left
+            {{ out.name }} - {{ out.final_inv }} {{ out.UOM }}/s left
           </li>
         </ul>
         <span v-if="out_of_stocks === null" class="flex justify-center">No Items</span>

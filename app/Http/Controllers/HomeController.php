@@ -15,15 +15,17 @@ class HomeController extends Controller
         return inertia('Home', [
             'user' => Auth::user(),
             'missing_items' => (
-            $missingItems = Item::whereIn(
-                    'id',
-                    BorrowedItem::whereIn(
-                        'borrowing_slip_id',
-                        BorrowingSlip::where('date_end', '<', now())
-                            ->where('status', 'ongoing')
-                            ->pluck('id')
-                    )->pluck('item_id')
-                )->with('category')->get()
+            $missingItems = BorrowedItem::whereIn(
+                    'borrowing_slip_id',
+                    BorrowingSlip::where('date_end', '<', now())
+                        ->where('status', 'ongoing')
+                        ->pluck('id')
+                )
+                    ->with([
+                        'item.category',
+                        'borrowingSlip',
+                    ])
+                    ->get()
             )->isEmpty() ? null : $missingItems
             ,
 

@@ -230,9 +230,11 @@ const searchItems = () => {
         <div class="flex justify-end mt-4">
           <button
             type="submit"
-            class="bg-red-800 text-red-100 px-4 py-2 rounded hover:opacity-50"
+            :disabled="form.processing"
+            class="bg-red-800 text-red-100 px-4 py-2 rounded hover:opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit
+            <span v-if="form.processing">Submitting...</span>
+            <span v-else>Submit</span>
           </button>
         </div>
       </form>

@@ -30,7 +30,7 @@ class InventoryController extends Controller
                     $query->where('category_id', $categoryId);
                 })
                 ->with('category:id,name')
-                ->select('id', 'name', 'img', 'category_id', 'UOM')
+                ->select('id', 'name', 'description', 'img', 'category_id', 'UOM')
                 ->paginate(20)
                 ->through(function ($item) {
                     $item->final_inv = Stock::where('item_id', $item->id)

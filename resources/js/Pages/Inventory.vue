@@ -180,6 +180,7 @@ if (props.categoryId === "all") {
             <div
               v-for="(item, index) in items.data"
               :key="item.id || index"
+              :title="item.description"
               class="relative bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-200 flex flex-col"
             >
               <div

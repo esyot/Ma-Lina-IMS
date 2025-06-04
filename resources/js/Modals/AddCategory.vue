@@ -62,8 +62,10 @@ const submitForm = () => {
           <button
             type="submit"
             class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            :disabled="form.processing"
           >
-            Add Category
+            <span v-if="form.processing">Adding...</span>
+            <span v-else>Add Category</span>
           </button>
         </div>
       </form>

@@ -142,9 +142,11 @@ const onImageChange = (event) => {
         <div class="flex justify-end">
           <button
             type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+            :disabled="form.processing"
           >
-            Submit
+            <span v-if="form.processing">Submitting...</span>
+            <span v-else>Submit</span>
           </button>
         </div>
       </form>

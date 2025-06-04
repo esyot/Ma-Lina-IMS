@@ -18,8 +18,10 @@ defineProps({
 <template>
   <Layout>
     <section>
-      <div class="flex border-b items-center justify-between p-2">
-        <h1 class="text-2xl font-bold">Stock Record on {{ date }}</h1>
+      <div class="flex items-center justify-between p-2 shadow-md">
+        <h1 class="text-2xl font-bold">
+          Stock Record on <span class="text-red-800"> {{ date }}</span>
+        </h1>
       </div>
 
       <div class="flex mt-4">

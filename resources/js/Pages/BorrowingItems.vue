@@ -74,7 +74,7 @@ const formatDate = (dateString) => {
       :items="borrowedItems"
     />
     <section class="">
-      <div class="flex items-center justify-between border-b border-red-800/50">
+      <div class="flex items-center justify-between shadow-md">
         <h1 class="text-xl font-bold p-2">Borrowers</h1>
         <button
           @click="toggleBorrowingSlipModal"
@@ -97,7 +97,7 @@ const formatDate = (dateString) => {
         </select>
       </section>
       <div
-        class="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        class="p-4 mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
       >
         <div
           v-for="(slip, index) in borrowing_slips"
@@ -117,10 +117,10 @@ const formatDate = (dateString) => {
             >
             <span class="block"><strong>Status:</strong> {{ slip.status }}</span>
           </div>
-          <div class="mt-4 flex gap-2">
+          <div class="mt-4 flex justify-center gap-2">
             <button
               @click="toggleViewBorrowedItemsModal(slip.borrowed_items)"
-              class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-xs"
+              class="text-red-800 px-4 py-2 rounded hover:opacity-50 text-s"
             >
               View Borrowed Items
             </button>
@@ -128,7 +128,7 @@ const formatDate = (dateString) => {
             <button
               v-if="slip.status === 'ongoing'"
               @click="markAsReturned(slip.id)"
-              class="bg-blue-500 text-white px-4 py-2 rounded hover:opacity-50 text-xs"
+              class="bg-red-800 text-white px-4 py-2 rounded hover:opacity-50 text-s"
             >
               Mark as Returned
             </button>

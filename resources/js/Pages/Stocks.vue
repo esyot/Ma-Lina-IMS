@@ -23,7 +23,7 @@ const formattedDate = (date) =>
 <template>
   <Layout :user="user">
     <section class="select-none">
-      <div class="flex border-b border-red-800/50 items-center justify-between p-2">
+      <div class="flex items-center justify-between p-2 shadow-md">
         <h1 class="text-xl font-bold">Stock Records</h1>
 
         <a

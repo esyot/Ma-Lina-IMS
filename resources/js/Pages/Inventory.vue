@@ -92,7 +92,7 @@ if (props.categoryId === "all") {
       @toggleAddCategoryModal="toggleAddCategoryModal"
     />
     <section
-      class="flex justify-between items-center w-full sticky top-0 bg-white shadow-md z-10 border-b border-red-800/50"
+      class="flex justify-between items-center w-full sticky top-0 bg-white shadow-md z-10"
     >
       <h1 class="px-4 font-bold text-xl">Inventory</h1>
 
@@ -103,14 +103,15 @@ if (props.categoryId === "all") {
           v-model="searchValue"
           type="text"
           class="outline-none bg-transparent"
-          placeholder="Search Items..."
+          placeholder="Search items..."
+          @keyup.enter="searchItems"
         />
         <div class="flex items-center space-x-2">
           <a href="/inventory" v-if="searchValue">
             <i class="fas fa-circle-xmark text-gray-500 hover:opacity-50"></i>
           </a>
-          <button @click="searchItems" class="bg-red-800 px-2 py-1 rounded">
-            <i class="fas fa-magnifying-glass text-red-100"></i>
+          <button @click="searchItems" class="text-red-800 hover:opacity-50">
+            <i class="fas fa-magnifying-glass"></i>
           </button>
         </div>
       </div>

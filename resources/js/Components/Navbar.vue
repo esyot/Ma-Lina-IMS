@@ -12,7 +12,7 @@ const isOpen = ref(false);
 </script>
 
 <template>
-  <nav class="bg-white border-b border-red-800/30 sticky top-0 z-50 shadow-md">
+  <nav class="bg-white sticky top-0 z-50 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex">
@@ -55,40 +55,62 @@ const isOpen = ref(false);
         <div class="hidden md:flex md:items-center md:space-x-4">
           <a
             href="/"
-            :class="[
-              $page.url === '/'
-                ? 'border border-red-800 text-red-800  px-4 py-2 rounded font-semibold'
-                : 'text-red-800 hover:bg-red-100 px-4 py-2 rounded transition',
-            ]"
-            >Home</a
+            class="relative px-4 py-2 rounded font-semibold text-red-800 transition group"
           >
+            Home
+            <span
+              class="absolute left-0 -bottom-1 w-full h-0.5 bg-red-800 rounded transition-all duration-300"
+              :class="[
+                $page.url === '/' ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0',
+                'group-hover:opacity-100 group-hover:scale-x-100',
+              ]"
+            ></span>
+          </a>
           <a
             href="/inventory"
-            :class="[
-              $page.url.startsWith('/inventory')
-                ? 'border border-red-800 text-red-800 px-4 py-2 rounded font-semibold'
-                : 'text-red-800 hover:bg-red-100 px-4 py-2 rounded transition',
-            ]"
-            >Inventory</a
+            class="relative px-4 py-2 rounded font-semibold text-red-800 transition group"
           >
+            Inventory
+            <span
+              class="absolute left-0 -bottom-1 w-full h-0.5 bg-red-800 rounded transition-all duration-300"
+              :class="[
+                $page.url.startsWith('/inventory')
+                  ? 'opacity-100 scale-x-100'
+                  : 'opacity-0 scale-x-0',
+                'group-hover:opacity-100 group-hover:scale-x-100',
+              ]"
+            ></span>
+          </a>
           <a
             href="/stocks"
-            :class="[
-              $page.url.startsWith('/stocks')
-                ? 'border border-red-800 text-red-800 px-4 py-2 rounded font-semibold'
-                : 'text-red-800 hover:bg-red-100 px-4 py-2 rounded transition',
-            ]"
-            >Stocks</a
+            class="relative px-4 py-2 rounded font-semibold text-red-800 transition group"
           >
+            Stocks
+            <span
+              class="absolute left-0 -bottom-1 w-full h-0.5 bg-red-800 rounded transition-all duration-300"
+              :class="[
+                $page.url.startsWith('/stocks')
+                  ? 'opacity-100 scale-x-100'
+                  : 'opacity-0 scale-x-0',
+                'group-hover:opacity-100 group-hover:scale-x-100',
+              ]"
+            ></span>
+          </a>
           <a
             href="/borrowing-items"
-            :class="[
-              $page.url.startsWith('/borrowing-items')
-                ? 'border border-red-800 text-red-800 px-4 py-2 rounded font-semibold'
-                : 'text-red-800 hover:bg-red-100 px-4 py-2 rounded transition',
-            ]"
-            >Borrowing Items</a
+            class="relative px-4 py-2 rounded font-semibold text-red-800 transition group"
           >
+            Borrowing Items
+            <span
+              class="absolute left-0 -bottom-1 w-full h-0.5 bg-red-800 rounded transition-all duration-300"
+              :class="[
+                $page.url.startsWith('/borrowing-items')
+                  ? 'opacity-100 scale-x-100'
+                  : 'opacity-0 scale-x-0',
+                'group-hover:opacity-100 group-hover:scale-x-100',
+              ]"
+            ></span>
+          </a>
         </div>
 
         <div class="relative group hidden md:block">

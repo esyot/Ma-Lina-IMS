@@ -71,8 +71,14 @@ const onImageChange = (event) => {
     @click.self="closeModal"
     class="flex fixed justify-center items-center inset-0 bg-gray-800/50 z-50"
   >
-    <div class="bg-white p-6 rounded shadow-md w-full max-w-md">
-      <h2 class="text-xl font-bold mb-4">Add Item</h2>
+    <div class="bg-white p-6 rounded w-full max-w-md shadow-md">
+      <div class="flex justify-between w-full border-b mb-2">
+        <h2 class="text-xl font-bold p-2">Add Item</h2>
+
+        <button class="text-red-800 hover:opacity-50" @click="closeModal">
+          <i class="fas fa-circle-xmark"></i>
+        </button>
+      </div>
       <form @submit.prevent="submitForm">
         <div class="mb-2">
           <div v-if="imagePreview" class="flex justify-center">
@@ -142,7 +148,7 @@ const onImageChange = (event) => {
         <div class="flex justify-end">
           <button
             type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+            class="bg-red-800 text-red-100 px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
             :disabled="form.processing"
           >
             <span v-if="form.processing">Submitting...</span>

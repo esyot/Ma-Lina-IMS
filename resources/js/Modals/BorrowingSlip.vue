@@ -101,7 +101,7 @@ const searchItems = () => {
     @click.self="closeModal"
     class="flex fixed justify-center items-center bg-gray-800/50 inset-0 z-50"
   >
-    <div class="bg-white p-6 rounded shadow-lg">
+    <div class="mx-2 bg-white p-2 rounded-lg shadow-md">
       <form @submit.prevent="submitForm">
         <h2 class="text-xl font-semibold mb-4 p-2 border-b border-red-800">
           Borrowing Slip

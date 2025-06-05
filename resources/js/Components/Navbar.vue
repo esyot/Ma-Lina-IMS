@@ -142,7 +142,7 @@ const isOpen = ref(false);
     </div>
 
     <div class="md:hidden" id="mobile-menu" v-show="isOpen">
-      <div class="px-2 pt-2 pb-3 space-y-1">
+      <div class="px-2 pb-2 space-y-1">
         <a
           href="/"
           :class="[

@@ -20,7 +20,7 @@ const closeModal = () => {
     @click.self="closeModal"
     class="flex fixed inset-0 justify-center items-center bg-gray-800/50 z-50"
   >
-    <div class="bg-white rounded-lg shadow-xl p-2 w-full max-w-2xl">
+    <div class="bg-white rounded-lg shadow-xl p-2 w-full max-w-2xl mx-2">
       <div class="flex justify-between items-center mb-2">
         <h1 class="text-2xl font-bold text-gray-800">List of Items Borrowed</h1>
         <button

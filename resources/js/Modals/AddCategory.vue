@@ -30,8 +30,15 @@ const submitForm = () => {
     @click.self="closeModal"
     class="flex fixed justify-center items-center bg-gray-800/50 inset-0 z-50"
   >
-    <div class="bg-white p-6 rounded shadow-lg w-96">
+    <div class="bg-white p-6 rounded w-full max-w-md shadow-md w-96">
       <form @submit.prevent="submitForm">
+        <div class="flex justify-between w-full border-b mb-2">
+          <h1 class="text-xl font-bold p-2">Add Category</h1>
+
+          <button class="text-red-800 hover:opacity-50" @click="closeModal">
+            <i class="fas fa-circle-xmark"></i>
+          </button>
+        </div>
         <div class="mb-4">
           <label for="name" class="block text-gray-700 font-bold mb-2">Name</label>
           <input
@@ -61,7 +68,7 @@ const submitForm = () => {
         <div class="flex justify-end">
           <button
             type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            class="bg-red-800 text-red-100 px-4 py-2 rounded hover:bg-blue-700"
             :disabled="form.processing"
           >
             <span v-if="form.processing">Adding...</span>

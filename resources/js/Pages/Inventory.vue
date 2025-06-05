@@ -116,49 +116,53 @@ if (props.categoryId === "all") {
         </div>
       </div>
     </section>
-    <div class="flex justify-between">
-      <nav>
-        <button
-          class="flex w-full justify-between items-center px-4 space-x-2 border-x shadow-md"
-          @click="showCategories = !showCategories"
-        >
-          <span class="font-bold py-2">Categories</span>
-          <i
-            :class="[
-              'fas fa-chevron-down fa-sm transition-transform duration-300',
-              showCategories ? 'rotate-180' : '',
-            ]"
-          ></i>
-        </button>
-
-        <ul
-          v-show="true"
+    <div class="flex justify-between shadow-md z-10">
+      <nav class="">
+        <div
           :class="[
-            'flex flex-col justify-between w-full bg-gray-100 p-4 space-y-2 border-b rounded-b-lg shadow-md transform transition-all duration-300 ease-in-out origin-top',
-            showCategories
-              ? 'max-h-96 opacity-100 scale-100'
-              : 'max-h-0 opacity-0 scale-y-95 overflow-hidden',
+            'sticky top-16 bg-gray-100 border-b rounded-r-lg shadow-md transition-transform duration-300 ease-in-out',
+            showCategories ? 'block' : 'hidden',
+            'w-20 min-w-[14rem]',
           ]"
         >
-          <li class="hover:text-red-800 cursor-pointer" @click="changeCategory('all')">
-            All
-          </li>
-          <li
-            v-for="(category, index) in categories"
-            :key="category.id || index"
-            @click="changeCategory(category.id)"
-            class="hover:text-red-800 cursor-pointer"
+          <div
+            class="flex justify-between items-center px-4 py-2 border-b shadow-md bg-white"
           >
-            {{ category.name }}
-          </li>
-          <button
-            @click="toggleAddCategoryModal"
-            class="border rounded-lg flex justify-center bg-white px-4 py-2 items-center space-x-2 hover:bg-red-800/50 hover:text-white transition-colors duration-200"
-            type="button"
-          >
-            <i class="fas fa-plus"></i>
-          </button>
-        </ul>
+            <span class="font-bold">Categories</span>
+
+            <button @click="showCategories = false" class="hover:opacity-50">
+              <i class="block fas fa-times hover:opacity-50"></i>
+            </button>
+          </div>
+          <ul class="flex flex-col justify-between w-full p-4 space-y-2">
+            <li class="hover:text-red-800 cursor-pointer" @click="changeCategory('all')">
+              All
+            </li>
+            <li
+              v-for="(category, index) in categories"
+              :key="category.id || index"
+              @click="changeCategory(category.id)"
+              class="hover:text-red-800 cursor-pointer"
+            >
+              {{ category.name }}
+            </li>
+            <button
+              @click="toggleAddCategoryModal"
+              class="border rounded-lg flex justify-center bg-white px-4 py-2 items-center space-x-2 hover:bg-red-800/50 hover:text-white transition-colors duration-200"
+              type="button"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </ul>
+        </div>
+        <button
+          v-if="!showCategories"
+          class="fixed top-32 left-0 z-30 bg-red-800 text-white rounded-r-lg px-3 py-2 shadow-md hover:bg-red-700 transition-colors duration-200"
+          @click="showCategories = true"
+          type="button"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
       </nav>
 
       <aside class="flex-1 m-4">
@@ -212,24 +216,22 @@ if (props.categoryId === "all") {
         </div>
       </aside>
     </div>
-    <div class="footer flex items-center justify-center space-x-4 mt-6">
-      <i
-        @click="paginationControl(items.first_page_url)"
-        class="fa-solid fa-angles-left cursor-pointer"
-      ></i>
-      <i
-        @click="paginationControl(items.prev_page_url)"
-        class="fas fa-chevron-left cursor-pointer"
-      ></i>
+    <div
+      class="sticky bottom-0 bg-white p-2 shadow footer flex items-center justify-center space-x-4 mt-6"
+    >
+      <button @click="paginationControl(items.first_page_url)" class="p-1">
+        <i class="fa-solid fa-angles-left cursor-pointer hover:opacity-50"></i>
+      </button>
+      <button @click="paginationControl(items.prev_page_url)" class="p-1">
+        <i class="fas fa-chevron-left cursor-pointer hover:opacity-50"></i>
+      </button>
       <span>Page {{ items.current_page }} of {{ items.last_page }}</span>
-      <i
-        @click="paginationControl(items.next_page_url)"
-        class="fas fa-chevron-right cursor-pointer"
-      ></i>
-      <i
-        @click="paginationControl(items.last_page_url)"
-        class="fa-solid fa-angles-right cursor-pointer"
-      ></i>
+      <button @click="paginationControl(items.next_page_url)" class="p-1">
+        <i class="fas fa-chevron-right cursor-pointer hover:opacity-50"></i>
+      </button>
+      <button @click="paginationControl(items.last_page_url)" class="p-1">
+        <i class="fa-solid fa-angles-right cursor-pointer hover:opacity-50"></i>
+      </button>
     </div>
   </Layout>
 </template>
